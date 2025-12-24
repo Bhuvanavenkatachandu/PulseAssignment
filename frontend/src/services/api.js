@@ -27,5 +27,22 @@ async function get(path) {
     return { data: result };
 }
 
-const api = { post, get };
+
+async function upload(path, formData) {
+    const response = await fetch(BASE_URL + path, {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw { response: { data: result } };
+    }
+
+    return { data: result };
+}
+
+const api = { post, get, upload };
 export default api;
+

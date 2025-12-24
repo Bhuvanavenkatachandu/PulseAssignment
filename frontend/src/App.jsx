@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import VideoUpload from './components/VideoUpload';
 import ViewerDashboard from './pages/ViewerDashboard';
 import EditorDashboard from './pages/EditorDashboard';
 import AdminDashboard from './pages/AdminDashboard';
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/upload-video" element={<VideoUpload />} />
 
           {/* Protected Routes */}
           <Route
