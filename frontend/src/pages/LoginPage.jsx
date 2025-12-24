@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const { email, password } = formData;
 
@@ -25,16 +27,18 @@ function LoginPage() {
         try {
             const response = await api.post('/auth/login', { email, password });
 
-            // Store token in localStorage
-            localStorage.setItem('token', response.data.user.token);
-            localStorage.setItem('user', JSON.stringify({
-                _id: response.data.user._id,
-                username: response.data.user.username,
-                email: response.data.user.email
-            }));
+            // Use AuthContext to store user data including role
+            login(response.data.user);
 
-            // Redirect to home page
-            navigate('/');
+            // Redirect based on role
+            const userRole = response.data.user.role;
+            if (userRole === 'admin') {
+                navigate('/admin');
+            } else if (userRole === 'editor') {
+                navigate('/editor');
+            } else {
+                navigate('/viewer');
+            }
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed. Please try again.');
         } finally {

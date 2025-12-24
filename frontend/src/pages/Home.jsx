@@ -1,6 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 function Home() {
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated()) {
+            // Redirect to appropriate dashboard based on role
+            if (user.role === 'admin') {
+                navigate('/admin');
+            } else if (user.role === 'editor') {
+                navigate('/editor');
+            } else {
+                navigate('/viewer');
+            }
+        }
+    }, [user, isAuthenticated, navigate]);
+
     return (
         <div className="container">
             <header>

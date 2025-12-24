@@ -7,13 +7,14 @@ function RegisterPage() {
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        role: 'viewer'
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const { username, email, password, confirmPassword } = formData;
+    const { username, email, password, confirmPassword, role } = formData;
 
     const onChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,9 +31,9 @@ function RegisterPage() {
 
         setLoading(true);
         try {
-            const response = await api.post('/auth/register', { username, email, password });
+            const response = await api.post('/auth/register', { username, email, password, role });
             setSuccess(response.data.message);
-            setFormData({ username: '', email: '', password: '', confirmPassword: '' });
+            setFormData({ username: '', email: '', password: '', confirmPassword: '', role: 'viewer' });
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed. Please try again.');
         } finally {
@@ -81,6 +82,98 @@ function RegisterPage() {
                             minLength="6"
                         />
                     </div>
+
+                    <div className="form-group" style={{ marginTop: '0.5rem' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '0.75rem',
+                            fontWeight: 600,
+                            fontSize: '0.875rem'
+                        }}>
+                            Select Your Role
+                        </label>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                            <label style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                cursor: 'pointer',
+                                padding: '0.75rem',
+                                border: role === 'viewer' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                borderRadius: '8px',
+                                backgroundColor: role === 'viewer' ? 'rgba(99, 102, 241, 0.05)' : 'transparent',
+                                transition: 'all 0.2s'
+                            }}>
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="viewer"
+                                    checked={role === 'viewer'}
+                                    onChange={onChange}
+                                    style={{ marginRight: '0.75rem', marginTop: '0.25rem' }}
+                                />
+                                <div>
+                                    <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Viewer</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                        Can watch videos
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                cursor: 'pointer',
+                                padding: '0.75rem',
+                                border: role === 'editor' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                borderRadius: '8px',
+                                backgroundColor: role === 'editor' ? 'rgba(99, 102, 241, 0.05)' : 'transparent',
+                                transition: 'all 0.2s'
+                            }}>
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="editor"
+                                    checked={role === 'editor'}
+                                    onChange={onChange}
+                                    style={{ marginRight: '0.75rem', marginTop: '0.25rem' }}
+                                />
+                                <div>
+                                    <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Editor</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                        Can upload and watch videos
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label style={{
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                cursor: 'pointer',
+                                padding: '0.75rem',
+                                border: role === 'admin' ? '2px solid var(--primary)' : '1px solid var(--border)',
+                                borderRadius: '8px',
+                                backgroundColor: role === 'admin' ? 'rgba(99, 102, 241, 0.05)' : 'transparent',
+                                transition: 'all 0.2s'
+                            }}>
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="admin"
+                                    checked={role === 'admin'}
+                                    onChange={onChange}
+                                    style={{ marginRight: '0.75rem', marginTop: '0.25rem' }}
+                                />
+                                <div>
+                                    <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Admin</div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                        Can manage users and videos (Only one allowed)
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
                     <div className="form-group">
                         <input
                             name="confirmPassword"

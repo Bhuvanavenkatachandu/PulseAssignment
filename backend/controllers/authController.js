@@ -7,11 +7,29 @@ const jwt = require('jsonwebtoken');
 // @access  Public
 const registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, role } = req.body;
 
         // Validation
         if (!username || !email || !password) {
             return res.status(400).json({ message: 'Please provide all fields' });
+        }
+
+        // Validate role
+        const validRoles = ['viewer', 'editor', 'admin'];
+        const userRole = role || 'viewer';
+
+        if (!validRoles.includes(userRole)) {
+            return res.status(400).json({ message: 'Invalid role. Must be viewer, editor, or admin' });
+        }
+
+        // Check if trying to register as admin
+        if (userRole === 'admin') {
+            const adminExists = await User.findOne({ role: 'admin' });
+            if (adminExists) {
+                return res.status(403).json({
+                    message: 'Admin already exists. Only one admin is allowed in the system.'
+                });
+            }
         }
 
         // Check if user exists
@@ -28,7 +46,8 @@ const registerUser = async (req, res) => {
         const user = await User.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: userRole
         });
 
         if (user) {
@@ -37,7 +56,8 @@ const registerUser = async (req, res) => {
                 user: {
                     _id: user._id,
                     username: user.username,
-                    email: user.email
+                    email: user.email,
+                    role: user.role
                 }
             });
         } else {
@@ -71,7 +91,8 @@ const loginUser = async (req, res) => {
                     _id: user._id,
                     username: user.username,
                     email: user.email,
-                    token: generateToken(user._id)
+                    role: user.role,
+                    token: generateToken(user._id, user.role)
                 }
             });
         } else {
@@ -84,8 +105,8 @@ const loginUser = async (req, res) => {
 };
 
 // Generate JWT
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', {
+const generateToken = (id, role) => {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET || 'fallback_secret', {
         expiresIn: '30d',
     });
 };
