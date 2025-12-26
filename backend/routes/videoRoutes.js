@@ -132,8 +132,14 @@ router.get('/stream/:id', protect, async (req, res) => {
         // Optional: Check access (e.g., if Flagged, maybe restrict?)
         // For now, allow logged in users to stream if they found the ID.
 
-        const path = video.filepath; // Ensure this is absolute or relative from root correctly
-        // Since filepath was saved as 'uploads/filename', and we are running from backend root, this should work.
+        const path = video.filepath;
+
+        // Check if file physically exists (Handling Render Ephemeral Storage)
+        if (!fs.existsSync(path)) {
+            return res.status(404).json({
+                message: 'Video file not found on server. On free hosting (Render), files are deleted when the server sleeps. Please upload again.'
+            });
+        }
 
         const stat = fs.statSync(path);
         const fileSize = stat.size;

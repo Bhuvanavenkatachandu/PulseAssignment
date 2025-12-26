@@ -36,6 +36,20 @@
     padding: 15px;
     background: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    /* Prevents long text from overflowing */
+    overflow: hidden;
+    /* Keeps content inside the card */
+}
+
+.video-card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Adds ... for long titles */
+    margin-bottom: 10px;
 }
 
 .status {
