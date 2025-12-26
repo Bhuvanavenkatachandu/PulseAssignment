@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://pulseassignment.onrender.com/api', // Production Backend URL
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api', // Fallback to local
 });
 
 api.interceptors.request.use(
