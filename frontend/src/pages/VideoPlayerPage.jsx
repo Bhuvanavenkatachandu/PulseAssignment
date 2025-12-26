@@ -9,7 +9,7 @@ const VideoPlayerPage = () => {
     const navigate = useNavigate();
 
     // Construct stream URL with token
-    const streamUrl = `http://localhost:5001/api/videos/stream/${id}?token=${user?.token}`;
+    const streamUrl = `https://pulseassignment.onrender.com/api/videos/stream/${id}?token=${user?.token}`;
 
     return (
         <div className="player-container">

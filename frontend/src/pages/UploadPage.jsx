@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
 import io from 'socket.io-client';
 import './UploadPage.css';
 
-const ENDPOINT = 'http://localhost:5001';
+const ENDPOINT = 'https://pulseassignment.onrender.com';
 
 const UploadPage = () => {
     const [file, setFile] = useState(null);

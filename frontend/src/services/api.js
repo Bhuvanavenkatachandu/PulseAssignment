@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5001/api', // Backend is now on 5001
+    baseURL: 'https://pulseassignment.onrender.com/api', // Production Backend URL
 });
 
 api.interceptors.request.use(

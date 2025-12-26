@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
 import io from 'socket.io-client';
 import './Dashboard.css';
 
-const ENDPOINT = 'http://localhost:5001'; // Backend URL
+const ENDPOINT = 'https://pulseassignment.onrender.com'; // Backend URL
 
 const Dashboard = () => {
     const [videos, setVideos] = useState([]);
