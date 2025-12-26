@@ -5,8 +5,8 @@ import AuthContext from '../context/AuthContext';
 import io from 'socket.io-client';
 
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-const ENDPOINT = API_URL.replace('/api', ''); // Dynamic: Localhost or Render
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://pulseassignment.onrender.com/api' : 'http://localhost:5001/api');
+const ENDPOINT = API_URL.replace('/api', ''); // Local or Production Root
 
 const Dashboard = () => {
     const [videos, setVideos] = useState([]);

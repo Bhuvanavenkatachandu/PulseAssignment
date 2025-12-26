@@ -13,7 +13,7 @@ const VideoPlayerPage = () => {
     }
 
     // Construct stream URL with token
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://pulseassignment.onrender.com/api' : 'http://localhost:5001/api');
     const streamUrl = `${API_URL}/videos/stream/${id}?token=${user.token}`;
 
     return (
