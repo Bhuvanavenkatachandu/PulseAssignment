@@ -73,8 +73,7 @@ const simulateProcessing = async (video, io) => {
         const interval = setInterval(async () => {
             progress += 25;
             if (progress <= 100) {
-                // Update progress in DB (optional, maybe too frequent write? let's just emit)
-                // Keeping DB simple, assume memory or just emit for UI
+                // Emit progress updates
                 io.emit('video-progress', { videoId: video._id, progress });
             } else {
                 clearInterval(interval);
@@ -129,12 +128,11 @@ router.get('/stream/:id', protect, async (req, res) => {
             return res.status(404).json({ message: 'Video not found' });
         }
 
-        // Optional: Check access (e.g., if Flagged, maybe restrict?)
-        // For now, allow logged in users to stream if they found the ID.
+        // Verified user access allowed
 
         const path = video.filepath;
 
-        // Check if file physically exists (Handling Render Ephemeral Storage)
+        // Check if file exists
         if (!fs.existsSync(path)) {
             return res.status(404).json({
                 message: 'Video file not found on server. On free hosting (Render), files are deleted when the server sleeps. Please upload again.'

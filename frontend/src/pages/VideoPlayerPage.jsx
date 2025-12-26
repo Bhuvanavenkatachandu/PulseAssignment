@@ -1,17 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
-import './VideoPlayerPage.css';
+
 
 const VideoPlayerPage = () => {
     const { id } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    // Construct stream URL with token
+    if (loading || !user) {
+        return <div className="player-container">Loading session...</div>;
+    }
+
     // Construct stream URL with token
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-    const streamUrl = `${API_URL}/videos/stream/${id}?token=${user?.token}`;
+    const streamUrl = `${API_URL}/videos/stream/${id}?token=${user.token}`;
 
     return (
         <div className="player-container">

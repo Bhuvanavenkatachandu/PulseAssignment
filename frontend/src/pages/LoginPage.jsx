@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import './LoginPage.css'; // Assuming basic CSS, will create or use inline styles if needed
+// Assuming basic CSS, will create or use inline styles if needed
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

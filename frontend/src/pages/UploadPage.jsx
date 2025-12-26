@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import AuthContext from '../context/AuthContext';
 import io from 'socket.io-client';
-import './UploadPage.css';
+
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 const ENDPOINT = API_URL.replace('/api', ''); // Dynamic: Localhost or Render
@@ -19,11 +19,7 @@ const UploadPage = () => {
     useEffect(() => {
         const socket = io(ENDPOINT);
 
-        // Listen for progress updates for my uploads
-        // Note: In a real app we'd filter by videoId, but here we just listen 
-        // and if we are on this page, we assume it's relevant if we just uploaded.
-        // Better: listen for specific video ID we get back from upload response.
-        // For now, let's keep it simple: we will listen to specific video events AFTER upload.
+        // Initialize socket connection
 
         return () => socket.disconnect();
     }, []);
