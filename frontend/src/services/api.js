@@ -1,48 +1,20 @@
-const BASE_URL = 'http://localhost:5000/api';
+import axios from 'axios';
 
-async function post(path, body) {
-    const response = await fetch(BASE_URL + path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
+const api = axios.create({
+    baseURL: 'http://localhost:5001/api', // Backend is now on 5001
+});
 
-    const result = await response.json();
-
-    if (!response.ok) {
-        throw { response: { data: result } };
+api.interceptors.request.use(
+    (config) => {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (userInfo && userInfo.token) {
+            config.headers.Authorization = `Bearer ${userInfo.token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
+);
 
-    return { data: result };
-}
-
-async function get(path) {
-    const response = await fetch(BASE_URL + path);
-    const result = await response.json();
-
-    if (!response.ok) {
-        throw { response: { data: result } };
-    }
-
-    return { data: result };
-}
-
-
-async function upload(path, formData) {
-    const response = await fetch(BASE_URL + path, {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-        throw { response: { data: result } };
-    }
-
-    return { data: result };
-}
-
-const api = { post, get, upload };
 export default api;
-

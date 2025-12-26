@@ -1,28 +1,41 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const cors = require('cors');
-require('dotenv').config();
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
+const mongoose = require('mongoose');
+const http = require('http');
+const { Server } = require('socket.io');
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Connect to Database
-connectDB();
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*', // Allow all origins for simplicity, in production set to frontend URL
+        methods: ['GET', 'POST']
+    }
+});
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5174', 'http://127.0.0.1:5174'],
+    credentials: true
+}));
 app.use(express.json());
 
+// Database Connection
+mongoose.connect(process.env.MONGO_URI, {
+})
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
+// Make io accessible in routes
+app.set('io', io);
+
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/videos', require('./routes/videoRoutes'));
-app.use('/uploads', express.static('uploads'));
 
-app.get('/', (req, res) => {
-    res.send('MERN Stack API Running...');
-});
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

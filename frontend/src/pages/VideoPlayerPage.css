@@ -1,0 +1,19 @@
+.player-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.back-btn {
+    margin-bottom: 20px;
+    background-color: #6c757d;
+    width: auto;
+    padding: 8px 16px;
+}
+
+.video-wrapper {
+    background: black;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

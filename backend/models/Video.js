@@ -6,22 +6,34 @@ const videoSchema = new mongoose.Schema({
         required: true
     },
     originalName: {
-        type: String,
-        required: true
-    },
-    contentType: {
-        type: String,
-        required: true
+        type: String
     },
     size: {
-        type: Number,
-        required: true
+        type: Number
     },
-    path: {
+    status: {
         type: String,
+        enum: ['Uploading', 'Processing', 'Completed'],
+        default: 'Uploading'
+    },
+    progress: {
+        type: Number,
+        default: 0
+    },
+    sensitivityResult: {
+        type: String,
+        enum: ['Safe', 'Flagged', 'Pending'],
+        default: 'Pending'
+    },
+    uploadedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
-    uploadDate: {
+    filepath: {
+        type: String
+    },
+    createdAt: {
         type: Date,
         default: Date.now
     }
