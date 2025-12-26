@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://pulseassignment.onrender.com/api' : 'http://localhost:5001/api');
-const ENDPOINT = API_URL.replace('/api', ''); // Local or Production Root
+const ENDPOINT = API_URL.replace('/api', ''); // Backend root
 
 const UploadPage = () => {
     const [file, setFile] = useState(null);
@@ -46,9 +46,9 @@ const UploadPage = () => {
             });
 
             setStatus('Processing...');
-            setProgress(0); // Reset for processing progress
+            setProgress(0); // Reset progress
 
-            // Connect to socket to listen for THIS video's progress
+            // Connect to socket
             const socket = io(ENDPOINT);
 
             socket.on('video-progress', (msg) => {

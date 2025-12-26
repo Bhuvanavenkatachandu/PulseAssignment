@@ -32,9 +32,7 @@ const upload = multer({
     limits: { fileSize: 1024 * 1024 * 1024 } // 1GB limit
 });
 
-// @desc    Upload a video
-// @route   POST /api/videos/upload
-// @access  Private (Editor, Admin)
+// Upload a video
 router.post('/upload', protect, authorize('Editor', 'Admin'), upload.single('video'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'Please upload a video file' });
@@ -98,9 +96,7 @@ const simulateProcessing = async (video, io) => {
     }
 };
 
-// @desc    Get all videos
-// @route   GET /api/videos
-// @access  Private
+// Get all videos
 router.get('/', protect, async (req, res) => {
     try {
         let videos;
@@ -118,9 +114,7 @@ router.get('/', protect, async (req, res) => {
     }
 });
 
-// @desc    Stream video
-// @route   GET /api/videos/stream/:id
-// @access  Private
+// Stream video
 router.get('/stream/:id', protect, async (req, res) => {
     try {
         const video = await Video.findById(req.params.id);

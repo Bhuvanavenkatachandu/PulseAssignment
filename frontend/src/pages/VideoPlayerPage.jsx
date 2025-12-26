@@ -12,7 +12,7 @@ const VideoPlayerPage = () => {
         return <div className="player-container">Loading session...</div>;
     }
 
-    // Construct stream URL with token
+    // Stream URL
     const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://pulseassignment.onrender.com/api' : 'http://localhost:5001/api');
     const streamUrl = `${API_URL}/videos/stream/${id}?token=${user.token}`;
 

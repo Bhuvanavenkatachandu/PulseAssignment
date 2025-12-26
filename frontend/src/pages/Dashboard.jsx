@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://pulseassignment.onrender.com/api' : 'http://localhost:5001/api');
-const ENDPOINT = API_URL.replace('/api', ''); // Local or Production Root
+const ENDPOINT = API_URL.replace('/api', ''); // Backend root
 
 const Dashboard = () => {
     const [videos, setVideos] = useState([]);
@@ -30,8 +30,7 @@ const Dashboard = () => {
             );
         });
 
-        // Optional: Update progress in list if needed, but status is simpler
-        // socket.on('video-progress', ...);
+
 
         return () => socket.disconnect();
     }, []);
@@ -71,8 +70,7 @@ const Dashboard = () => {
                                     <p>Sensitivity: <span className={`sensitivity ${video.sensitivityResult?.toLowerCase()}`}>{video.sensitivityResult}</span></p>
                                 )}
                                 {video.status === 'Completed' && (user?.role === 'Admin' || user?.role === 'Viewer' || user?.role === 'Editor') && (
-                                    // Everyone can watch if they hold the link, but logically only Safe ones if Viewer?
-                                    // Backend filters list. So if it is in list, they can watch.
+                                    // Backend filters list logic applied
                                     <button onClick={() => navigate(`/watch/${video._id}`)}>Watch Video</button>
                                 )}
                             </div>
