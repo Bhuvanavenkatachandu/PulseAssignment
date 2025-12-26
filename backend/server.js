@@ -4,17 +4,20 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const http = require('http');
 const { Server } = require('socket.io');
+const fs = require('fs');
+const path = require('path');
+
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: '*', // Allow all origins for simplicity, in production set to frontend URL
-        methods: ['GET', 'POST']
-    }
-});
+const io = new Server(server, { cors: { origin: '*' } }); // Socket.io setup
 
 app.use(cors({
     origin: ['http://localhost:5174', 'https://pulseassignment.netlify.app'],
@@ -22,8 +25,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Database Connection
-console.log('Attempting to connect with MONGO_URI:', process.env.MONGO_URI ? 'Defined' : 'Undefined');
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
 })
     .then(() => console.log('MongoDB Connected'))
@@ -35,6 +37,12 @@ app.set('io', io);
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/videos', require('./routes/videoRoutes'));
+
+// Error Handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Internal Server Error', error: err.message });
+});
 
 const PORT = process.env.PORT || 5000;
 
