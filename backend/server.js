@@ -24,6 +24,7 @@ app.use(cors({
 app.use(express.json());
 
 // Database Connection
+console.log('Attempting to connect with MONGO_URI:', process.env.MONGO_URI ? 'Defined' : 'Undefined');
 mongoose.connect(process.env.MONGO_URI, {
 })
     .then(() => console.log('MongoDB Connected'))
