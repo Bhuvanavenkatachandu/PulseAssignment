@@ -150,6 +150,18 @@ The app will automatically detect if it's running locally/production.
 
 ---
 
+## Test Credentials
+
+For quick testing, you can use the following pre-registered accounts:
+
+| Role   | Email              | Password |
+| :----- | :----------------- | :------- |
+| Admin  | chandu@gmail.com   | chandu   |
+| Editor | sai@gmail.com      | sai      |
+| Viewer | bhanu@gmail.com    | bhanu    |
+
+---
+
 ## Security Measures
 
 -   **JWT Auth**: Stateless, secure token-based authentication.
